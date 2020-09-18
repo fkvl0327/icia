@@ -1,0 +1,88 @@
+
+public class JavaLesson {
+
+	public static void main(String[] args) {
+
+		//variableTest();
+		dataTypeTest();
+	}
+	
+	
+	private static void dataTypeTest() {
+		
+				byte myNumByte = 100;
+				System.out.println(myNumByte);
+				
+				short myNumShort = 5000;
+				System.out.println(myNumShort);
+				
+				int myNumInt = 100000;
+				System.out.println(myNumInt);
+				
+				long myNumLong = 15000000000L;
+				System.out.println(myNumLong);
+				
+				float myNumFloat = 5.75f;
+				System.out.println(myNumFloat);
+				
+				double myNumDouble = 19.99d;
+				System.out.println(myNumDouble);
+				
+				
+				float f1 = 35e3f;
+				double d1 = 12E4d;
+				System.out.println(f1);
+				System.out.println(d1);
+				
+				char a = 65, b = 66, c = 67;
+				System.out.println(a);
+				System.out.println(b);
+				System.out.println(c);
+				
+}
+
+	private static void variableTest() {
+		
+		String name = "John";
+		System.out.println(name);
+
+		int myNum = 15;
+		System.out.println(myNum);
+		/*
+		 * int myNum; myNum = 15; System.out.println(myNum);
+		 * 
+		 * final int myNum = 15; myNum = 20; // will generate an error: cannot assign a
+		 * value to a final variable
+		 * 
+		 * 
+		 * 
+		 * int myNum = 5;
+		
+		float myFloatNum = 5.99f;
+		char myLetter = 'D';
+		boolean myBool = true;
+		String myText = "Hello";
+
+		System.out.printf("Hello %s\n", name);
+		System.out.println("Hello" + name + "high");
+		
+		String firstName = "John ";
+		String lastName = "Doe";
+		String fullName = firstName + lastName;
+		System.out.println(fullName);
+		*/
+
+		int x = 5, y = 6, z = 50;
+		System.out.println(x + y); // Print the value of x + y
+		System.out.println(x + y + z);
+		
+		// Good
+		int minutesPerHour = 60;
+
+		// OK, but not so easy to understand what m actually is
+		int m = 60;
+	}
+		
+	}
+
+
