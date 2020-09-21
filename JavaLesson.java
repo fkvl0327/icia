@@ -1,12 +1,26 @@
 
 public class JavaLesson {
-
-	public static void main(String[] args) {
-
-		//variableTest();
+	public static
+	void main(String[] args) {
+		dividerTest();
 		dataTypeTest();
 	}
-	
+		private static void dividerTest() {
+			int n1=4, n2=10;
+			float f1 = (float)n1/n2;
+			System.out.println("n1/n2 ="+f1);
+		};
+		
+
+		//variableTest();
+		
+		/*
+		int n0 = 100, n1 = 1000;
+		n0 = n1; // n0=1000으로 변경
+		int retCode=0;
+		char c0 = 'a';
+		return retCode=0;
+		*/
 	
 	private static void dataTypeTest() {
 		
@@ -29,7 +43,7 @@ public class JavaLesson {
 				System.out.println(myNumDouble);
 				
 				
-				float f1 = 35e3f;
+				float f1 = 35e3f;//35x10^3
 				double d1 = 12E4d;
 				System.out.println(f1);
 				System.out.println(d1);
@@ -40,7 +54,7 @@ public class JavaLesson {
 				System.out.println(c);
 				
 }
-
+	
 	private static void variableTest() {
 		
 		String name = "John";
@@ -48,6 +62,7 @@ public class JavaLesson {
 
 		int myNum = 15;
 		System.out.println(myNum);
+		
 		/*
 		 * int myNum; myNum = 15; System.out.println(myNum);
 		 * 
@@ -72,17 +87,13 @@ public class JavaLesson {
 		System.out.println(fullName);
 		*/
 
-		int x = 5, y = 6, z = 50;
-		System.out.println(x + y); // Print the value of x + y
-		System.out.println(x + y + z);
-		
-		// Good
 		int minutesPerHour = 60;
 
 		// OK, but not so easy to understand what m actually is
 		int m = 60;
-	}
+	}}
+	
 		
-	}
+	
 
 
