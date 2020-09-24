@@ -23,16 +23,22 @@ public class hw3_vendingMachine_sample {
 				}
 			}
 		}
-		System.out.println("- q를 누를 시 종료합니다. 금액을 충전하고 싶으시면 [충전] 이라고 입력해 주세요.");
-		System.out.println("* 메 뉴 를 선 택 해 주 세 요 *");
-		System.out.println("------------------------");
-		System.out.println("1. 포카리스웨트 1000원");
-		System.out.println("2. 레쓰비 500원");
-		System.out.println("3. 이프로 400원");
-		System.out.println("------------------------");
+
+		if (price != 100 && price != 500 && price != 1000) {
+			while (true) {
+				if (price != 100 || price != 500 || price != 1000) {
+					System.out.println("입력할 수 있는 금액은 100원 또는 500원 또는 1000원입니다.");
+					price = sc.nextInt();
+				} else {
+					break;
+				}
+			}
+		}
+		
+		menu();
 
 		while (true) {
-			System.out.println("* 잔액 : " + price);
+			System.out.println("* 잔액 : " + (price + priceAdd));
 			System.out.println("> ");
 			select = sc.next();
 
@@ -60,10 +66,24 @@ public class hw3_vendingMachine_sample {
 			} else if (select.equals("q")) {
 				System.out.println("*잔액 [" + price + "원]을 반환합니다.");
 				System.out.println("자판기 운영을 종료합니다.");
+			} else if (select.equals("충전")) {
+				System.out.print("얼마를 더 입금하시겠습니까?: ");
+				priceAdd = sc.nextInt();
 			} else {
 				System.out.println("잘못된 입력입니다.");
 			}
 		}
 
+	}
+
+	private static void menu() {
+		System.out.println("- q를 누를 시 종료합니다. 금액을 충전하고 싶으시면 [충전] 이라고 입력해 주세요.");
+		System.out.println("* 메 뉴 를 선 택 해 주 세 요 *");
+		System.out.println("------------------------");
+		System.out.println("1. 포카리스웨트 1000원");
+		System.out.println("2. 레쓰비 500원");
+		System.out.println("3. 이프로 400원");
+		System.out.println("------------------------");
+		
 	}
 }
