@@ -1,0 +1,67 @@
+어제까지 배운 게 1차원 배열
+
+앞으로 2차원 배열을 배웁니다
+
+오늘 mysql을 설치해요
+
+============================
+
+변수는 선언위치에 따라 전역변수(글로벌변수)와 지역변수(로컬변수)로 나뉨
+
+===============
+
+배열의 초기값
+숫자 -> 0 // int, double, float, long, byte
+문자열 -> null // String
+
+함수 (parameter) 전달에서 배열을 사용할 수 있습니다
+
+myFunction(int[] a){}
+
+int name = myFunction(new int[] {1, 2, 3});
+int [] name = {1, 2, 3};
+int nametoo = myFunction(name);
+private static int myFunction(int[] name){};
+
+======================
+2차원배열=이중배열 // 1차원배열 <-> 다차원dimension 배열(다중배열)
+
+int [][] arr = {{ }}
+
+=====================
+배열 *정리*
+
+배열: 같은 데이터 타입의 데이터를 메모리상에서 일렬로 사용할 수 있는 새로운 데이터타입
+이중배열: 배열을 배열 타입으로 정리
+
+**집합으로 생각하면 편할 것 같다**
+
+배열: 집합 A, 집합 B, 집합 C
+이중배열: 집합을 한데 묶어 새로운 배열을 만든 것 D = {A, B, C}
+
+
+ex)
+int[][] arrName = { arrA, arrB, arrC };
+
+ㄴ위와 같은 배열이 있으면
+
+arrName[0] = arrA 
+arrName[1] = arrB
+arrName[2] = arrC
+ㄴ와 같은 의미이며
+
+arrA = {10, 20, 30}
+arrB = {11, 21, 31}
+arrC = {12, 22, 32}
+ㄴ라는 값이 주어져 있을 때
+
+arrName[0][1] = 10
+ㄴ주어진 좌표(0,1)에 따라 값을 구할 수 있다. (참조: 책 162p)
+
+============================================================
+*printf 왜 씀...???
+Though the are almost same but in printf you have more control over data
+like floating point precision and adding space is easy while formatting string Ideone.com .
+System. out. println(); is efficient for simply printing a line of text.
+
+https://www.quora.com/Whats-the-difference-between-println-and-printf-in-Java
