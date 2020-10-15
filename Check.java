@@ -1,5 +1,5 @@
-package classLesson;
-//이것이 자바다 6장 확인문제 13번~
+package selfstudy;
+//이것이 자바다 6장 확인문제 13번~18번
 
 //같은 파일 안에 적으려고 예제의 public은 뺐음
 
@@ -35,6 +35,16 @@ public class Check {
 		Printer.println(true);
 		Printer.println(5.7);
 		Printer.println("홍길동");
+		
+		//18번: 주어진 ShopServiceExample 클래스
+		ShopService obj1 = ShopService.getInstance();
+		ShopService obj2 = ShopService.getInstance();
+		
+		if(obj1 == obj2) {
+			System.out.println("같은 ShopService 객체입니다.");
+		}else {
+			System.out.println("다른 ShopService 객체입니다.");
+		}
 		
 	}
 }
@@ -109,3 +119,14 @@ class Printer {
 	}
 }
 
+//18번: 싱글톤
+class ShopService{
+	private static ShopService s = new ShopService();
+	
+	private ShopService() {}
+	
+	static ShopService getInstance() {
+		return s;
+	}
+	
+}

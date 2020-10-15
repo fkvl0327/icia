@@ -16,7 +16,11 @@ public class PhoneBook {
 	}
 
 	public static void main(String[] args) {
+		contact();
 		
+	}
+
+	private static void contact() {
 		Scanner sc = new Scanner(System.in);
 		String input;
 		int sel = 0;
@@ -48,8 +52,10 @@ public class PhoneBook {
 			}
 		} while (!input.equals("q"));
 		System.out.println("메뉴를 종료합니다.");
+		
+		
+		
 	}
-
 	private static void select() {
 		for (String name : map.keySet()) {
 			System.out.printf("%s %s \n", name, map.get(name));
@@ -103,4 +109,5 @@ public class PhoneBook {
 		System.out.println(map.get(name));
 
 	}
+	
 }
