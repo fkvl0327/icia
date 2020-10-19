@@ -7,8 +7,72 @@ public class ArrayListTest {
 
 	public static void main(String[] args) {
 		//arrayListStringTest();
-		arrayListIntegerTest();
+		//arrayListIntegerTest();
+		bubbleSortTest();
 
+	}
+
+	private static void bubbleSortTest() {
+		
+		//(46기준) 숫자가 물수제비처럼 이동하기 때문에 bubble sort라고 부름
+		
+		//코딩 아닌 설명 부분 array 구분 편하게 하려고 주석처리 안 한 것 때문에 오류 발생
+		//일부러 그냥 놔뒀음
+		int[] numbs = new int[] {46, 6, 0, 8, 5, 3};//작성한 배열, i=0, j=0일 때
+		//numbs[0]이 numbs[1]보다 크기 때문에 자리를 바꾼다
+		int[] numbs = new int[] {6, 46, 0, 8, 5, 3};//자리를 바꾼 모습, i=0, j=1일 때
+		//numbs[1]이 numbs[2]보다 크기 때문에 자리를 바꾼다
+		int[] numbs = new int[] {6, 0, 46, 8, 5, 3};//자리를 바꾼 모습, i=0, j=2일 때
+		//numbs[2]가 numbs[3]보다 크기 때문에 자리를 바꾼다
+		int[] numbs = new int[] {6, 0, 8, 46, 5, 3};//자리를 바꾼 모습, i=0, j=3일 때
+		//numbs[3]이 numbs[4]보다 크기 때문에 자리를 바꾼다
+		int[] numbs = new int[] {6, 0, 8, 5, 46, 3};//자리를 바꾼 모습, i=0, j=4일 때
+		//numbs[4]가 numbs[5]보다 크기 때문에 자리를 바꾼다
+		int[] numbs = new int[] {6, 0, 8, 5, 3, 46};//자리를 바꾼 모습, i=1, j=0일 때
+		//i=0일 때, j는 4가 마지막 값이므로 다음으로 i=1인 경우 진행
+		//numbs[0]가 numbs[1]보다 크기 때문에 자리를 바꾼다
+		int[] numbs = new int[] {0, 6, 8, 5, 3, 46};//자리를 바꾼 모습, i=1, j=1일 때
+		//numbs[1]이 numbs[2]보다 작기 때문에 자리를 바꾸지 않는다
+		//i=1, j=2일 때도 같은 모습
+		//numbs[2]가 numbs[3]보다 크기 때문에 자리를 바꾼다
+		int[] numbs = new int[] {0, 6, 5, 8, 3, 46};//자리를 바꾼 모습, i=1, j=3일 때
+		//numbs[3]이 numbs[4]보다 크기 때문에 자리를 바꾼다
+		//i=1일 때, j는 3이 마지막 값이므로 다음으로 i=2인 경우 진행
+		int[] numbs = new int[] {0, 6, 5, 3, 8, 46};//자리를 바꾼 모습, i=2, j=0일 때
+		//numbs[0]이 numbs[1]보다 작기 때문에 자리를 바꾸지 않는다
+		//i=2, j=1일 때도 같은 모습
+		//numbs[1]이 numbs[2]보다 크기 때문에 자리를 바꾼다
+		int[] numbs = new int[] {0, 5, 6, 3, 8, 46};//자리를 바꾼 모습, i=2, j=2일 때
+		//numbs[2]가 numbs[3]보다 크기 때문에 자리를 바꾼다
+		//i=2일 때, j는 2가 마지막 값이므로 다음으로 i=3인 경우 진행
+		int[] numbs = new int[] {0, 5, 3, 6, 8, 46};//자리를 바꾼 모습, i=3, j=0일 때
+		//numbs[0]이 numbs[1]보다 작기 때문에 자리를 바꾸지 않는다
+		//i=3, j=1일 때도 같은 모습
+		//numbs[1]이 numbs[2]보다 크기 때문에 자리를 바꾼다
+		//i=3일 때, j는 1이 마지막 값이므로 다음으로 i=4인 경우 진행
+		int[] numbs = new int[] {0, 3, 5, 6, 8, 46};//자리를 바꾼 모습, i=4, j=0일 때
+		//numbs[0]이 numbs[1]보다 작기 때문에 자리를 바꾸지 않는다.
+		//따라서 array를 출력하면 작은 값부터 큰 값 순으로 나온다.
+		
+		int temp;
+		for(int i=0;i<numbs.length;i++) {//i는 numbs 원소 개수만큼 반복(6번)
+			for(int j=0;j<numbs.length-i-1;j++) {//j는 numbs 원소 개수에서 i를 뺀 값-1까지 반복
+				//i가 0일 때는 6-0-1 =5
+				//즉, i가 0일 때 j는 0, 1, 2, 3, 4 총 5회 진행
+				//i=1이면 j=6-1-1=4로, 0, 1, 2, 3 총 4회 진행
+				//i=2이면 j=6-2-1=3으로, 0, 1, 2 총 3회 진행
+				//i=3이면 j=6-3-1=2로, 0, 1 총 2회 진행
+				//i=4이면 j=6-4-1=1, 0만 1회 진행
+				//앞의 숫자가 뒤의 숫자보다 크면
+				if(numbs[j]>numbs[j+1]) {
+					//앞과 뒤의 자리를 바꾼다
+					temp = numbs[j];
+					numbs[j] = numbs[j+1];
+					numbs[j+1] = temp;
+				}
+			}
+		}
+		
 	}
 
 	private static void arrayListIntegerTest() {

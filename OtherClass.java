@@ -1,7 +1,6 @@
 package classLesson;
 
-import javaLesson.Day;//javaLesson이라는 패키지 안의 Day 클래스를 import했다는 선언
-//직접 입력하지 않아도 Day.Friday를 이용하려면 이클립스에서 javaLesson.Day를 import하라는 warning 뜸
+import lesson.Day;
 
 public class OtherClass {
 
