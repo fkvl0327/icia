@@ -1,0 +1,31 @@
+@charset "UTF-8";
+table{
+	width:400px;
+	border-collapse: collapse;
+	border: 1px solid black;
+}
+
+caption{
+	font-size:15pt;
+}
+
+th, td{
+	border: 1px solid black;
+	padding:3px;
+}
+
+th{
+	width:25%;
+	background-color:#F8F8FF;
+	text-align:left;
+}
+
+td{
+	background-color: #DCDCDC;
+	text-align:left;
+}
+
+.msg_red{
+	font-size:10pt;
+	color:red;
+}
