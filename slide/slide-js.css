@@ -110,11 +110,13 @@ class 스타일을 따로 입력하지 않으면 디폴트값으로 버튼 모�
   overflow: hidden; /*창이 작아져서 내용을 표시할 수 없을 때는 내용을 숨긴다*/
   background-color: #333;
   font-family: Arial;
+  display: flex; /*flex 사용*/
+/*   justify-content: center; 가운데 정렬 */
 }
 
 /* Links inside the navbar */
 .navbar a {
-  float: left; /*좌측부터 메뉴 정렬*/
+/*   float: left; 좌측부터 메뉴 정렬, 없으면 기본값은 none(띄우지 않음) */
   font-size: 16px;
   color: white;
   text-align: center; /*각 div 안의 글자는 가운데 정렬*/
@@ -124,7 +126,7 @@ class 스타일을 따로 입력하지 않으면 디폴트값으로 버튼 모�
 
 /* The dropdown container */
 .dropdown {
-  float: left;
+/*   float: left; */
   overflow: hidden;
 }
 
@@ -159,12 +161,12 @@ class 스타일을 따로 입력하지 않으면 디폴트값으로 버튼 모�
 
 /* Links inside the dropdown */
 .dropdown-content a {
+  float: left;
   /*float 작성하지 않으면 기본값은 none=정렬하지 않는다*/
   /*text-decoration 작성하지 않으면 기본값은 none=꾸미지 않는다*/
   color: black;
   padding: 12px 16px;
-  display: block;
-  text-align: left;
+  display: block; 
 }
 
 /* Add a grey background color to dropdown links on hover */
@@ -174,10 +176,46 @@ class 스타일을 따로 입력하지 않으면 디폴트값으로 버튼 모�
 
 /* 커서를 대면 메뉴가 block 형태로 나타남 (각 항목이 한 줄씩 표시됨)*/
 .dropdown:hover .dropdown-content {
-  display: block;
+  display: block; /* inline 또는 inline-block이면 메뉴가 옆으로 나타남 */
+  /* block이기 때문에 커서를 대면 메뉴가 아래로 나타남 */
 }
 
 footer {
   width: 100%;
   text-align: center;
+}
+
+.navbar .icon {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .navbar a:not(:first-child), .dropdown .dropbtn {
+    display: none;
+  }
+  .navbar a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .navbar.responsive {position: relative;}
+  .navbar.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .navbar.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .navbar.responsive .dropdown {float: none;}
+  .navbar.responsive .dropdown-content {position: relative;}
+  .navbar.responsive .dropdown .dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
 }

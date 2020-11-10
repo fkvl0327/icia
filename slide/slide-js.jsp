@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+
 <div class="navbar">
   <a href="#home">Home</a>
   <a href="#news">News</a>
@@ -20,7 +21,9 @@
       <a href="#">Link 3</a>
     </div>
   </div>
+  <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 </div>
+
 <div class="slideshow-container">
 
 <!-- class 정의 시 class 이름을 "dog cat"처럼 띄어쓰기를 포함해서 쓰면 -->
@@ -90,6 +93,15 @@ function showSlides(n) {
   slides[slideIndex-1].style.display = "block";  
   dots[slideIndex-1].className += " active";
 }
+
+function myFunction() {
+	  var x = document.getElementById("navbar");
+	  if (x.className === "navbar") {
+	    x.className += "responsive";
+	  } else {
+	    x.className = "navbar";
+	  }
+	}
 </script>
 <footer>
     <p>Copyright ©A All rights reserved.</p>
