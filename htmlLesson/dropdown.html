@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>dropdown</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body{
+ margin: 0; /*빈칸없이 내용 채워지게*/
+}
+/* 띄어쓰기를 하면(ex. A B) A 안의 B를 의미 */
+/* 쉼표를 하면(ex. A, B) A와 B에 모두 해당함을 의미 */
+
+/* div 안에 있지만 button으로 입력했기 때문에
+class 스타일을 따로 입력하지 않으면 디폴트값으로 버튼 모양만 나옴 */
+/* Navbar container */
+.navbar {
+  overflow: hidden; /*창이 작아져서 내용을 표시할 수 없을 때는 내용을 숨긴다*/
+  background-color: #333;
+  font-family: Arial;
+}
+
+/* Links inside the navbar */
+.navbar a {
+  float: left; /*좌측부터 메뉴 정렬*/
+  font-size: 16px;
+  color: white;
+  text-align: center; /*각 div 안의 글자는 가운데 정렬*/
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* The dropdown container */
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit; /* Important for vertical align on mobile phones */
+  margin: 0; /* Important for vertical align on mobile phones */
+}
+
+/* Add a red background color to navbar links on hover */
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: red;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none; /* 커서를 대지 않으면 메뉴가 보이지 않음 */
+  /* 비슷한 속성으로 visibility : hidden 이 있으나,
+  해당 속성은 사용 시 완전히 안 보이게 되지는 않고 차지하는 자리(div영역)는 보인다 */
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1; /* z-index 번호가 작을 수록 우선해서(위쪽에) 배치된다*/
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  /*float 작성하지 않으면 기본값은 none=정렬하지 않는다*/
+  /*text-decoration 작성하지 않으면 기본값은 none=꾸미지 않는다*/
+  color: black;
+  padding: 12px 16px;
+  display: block;
+  text-align: left;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* 커서를 대면 메뉴가 block 형태로 나타남 (각 항목이 한 줄씩 표시됨)*/
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+</style>
+</head>
+<body>
+<div class="navbar">
+  <a href="#home">Home</a>
+  <a href="#news">News</a>
+  <div class="dropdown">
+    <button class="dropbtn">Dropdown
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="#">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

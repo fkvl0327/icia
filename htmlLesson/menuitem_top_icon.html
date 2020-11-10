@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>menu item top</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body{
+ margin: 100px;
+ font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+ overflow: hidden;
+ background-color:#333;
+}
+
+.topnav a{
+ float: left;
+ color: Gold;
+ text-align: center;
+ padding: 14px 16px;
+ text-decoration: none;
+ font-size: 20pt;
+}
+
+.topnav a:hover{
+ background-color: #add;
+ color: black;
+}
+
+.topnav a.active{
+ color: white;
+ background-color: DarkGreen;
+}
+
+/* 미디어쿼리 */
+/* - max-width: 해당 사이즈 이하일 때만 스타일 적용 */
+/* - min-width: 해당 사이즈 이상일 때만 스타일 적용 */
+@media screen and (max-width:500px){
+ .topnav a{
+  float: none;
+  background-color: DeepPink;
+  display: block;
+ }
+}
+
+</style>
+</head>
+<body>
+<div class="topnav">
+  <a class="active" href="https://cafe.naver.com/icia2020"><i class="fa fa-home"></i>ICIA</a>
+  <a href="http://www.naver.com"><i class="fa fa-search"></i>네이버</a>
+  <a href="http://www.daum.net"><i class="fa fa-envelope"></i>다음</a>
+  <a href="http://www.nate.com"><i class="fa fa-globe"></i>네이트</a>
+  <a href="http://www.google.com"><i class="fa fa-user"></i>구글</a>
+</div>
+</body>
+</html>
