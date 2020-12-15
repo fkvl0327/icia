@@ -551,7 +551,7 @@ INSERT INTO SA
   DATATIME FUNCTION
   - SYSDATE
   - DATETIME +(-) INTEGER
-  - ADD_MONTHS(D,i)
+  - ADD_MONTHS(D,i) : D에서 i개월만큼 더함
   - MONTH_BETWEEN(D1, D2)
   - LAST_DAY(D) : 현재 달의 마지막 날
   - NEXT_DAY(D, n) : 돌아올 n번째 요일(index는 1=일요일부터) // 금융권에서는 많이 씁니다
@@ -618,29 +618,38 @@ INSERT INTO SA
         COALESCE((SALARY * 12) + ((SALARY * 12) * COMMISSION_PCT), (SALARY*12), 0) AS "YEARPAY" FROM EMP;
   
   /* 함수 실습 */
+  -- 자바 인식을 위해 alias 영어로 지어 쓰세요
+  
   1. 아래의 예시처럼 사원정보를 조회하시오.
   --------------------------------------------------
    사원번호  사원이름  입사일  직무  급여  인센티브  연봉
   --------------------------------------------------
   SELECT EMPLOYEE_ID AS 사원번호,
-         FIRST_NAME || LAST_NAME AS 사원이름, 
+         FIRST_NAME || ' ' || LAST_NAME AS 사원이름,  -- || : 문자결합연산자
          TO_CHAR(HIRE_DATE, 'YYYY-MM-DD') AS 입사일,
          JOB_ID AS 직무,
          SALARY AS 급여,
          COALESCE((SALARY * 12) * COMMISSION_PCT, 0) AS 인센티브,
          COALESCE((SALARY * 12) * (1 + COMMISSION_PCT), (SALARY * 12)) AS 연봉 FROM EMP;
+         
+ SELECT * FROM EMP;
   
   2. 이번 달 말일을 기준으로 아래의 예시처럼 사원정보를 조회하시오.
   -----------------------------------------------------------------------
       사원번호    사원이름      입사일     직무  근속년수  근속일수   근속개월수               
   -----------------------------------------------------------------------
   SELECT EMPLOYEE_ID AS 사원번호,
-         FIRST_NAME || LAST_NAME AS 사원이름,
+         FIRST_NAME || ' ' || LAST_NAME AS 사원이름,
          TO_CHAR(HIRE_DATE, 'YYYY-MM-DD') AS 입사일,
          JOB_ID AS 직무,
-         (TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))-TO_NUMBER(TO_CHAR(HIRE_DATE, 'YYYY')) + 1) AS 근속년수,
-         TRUNC((SYSDATE-HIRE_DATE)+1) AS 근속일수,
-         TRUNC(MONTHS_BETWEEN(SYSDATE, HIRE_DATE)) AS 근속개월수 FROM EMP;
+         (TO_NUMBER(TO_CHAR(LAST_DAY(SYSDATE), 'YYYY'))-TO_NUMBER(TO_CHAR(HIRE_DATE, 'YYYY')) + 1) AS 근속년수,
+         -- 오라클에서는 문자에서 문자를 뺄 수 있습니다(단, 연산에 사용되는 문자들이 모두 숫자인 경우)
+         -- (하지만 명시하는 게 더 좋아요. 명시하지 않으면 속도가 느려요)
+         TRUNC((LAST_DAY(SYSDATE)-HIRE_DATE)+1) AS 근속일수,
+         (TO_DATE(TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD'), 'YYYYMMDD') - TO_DATE(TO_CHAR(HIRE_DATE, 'YYYYMMDD'), 'YYYYMMDD')) AS WORKDAYS
+         -- 이상하게 오류 나는데 이따가 오타 찾을 것
+         TRUNC(MONTHS_BETWEEN(LAST_DAY(SYSDATE), HIRE_DATE)) AS 근속개월수
+         FROM EMP;
          
   3. 이번 달 말일을 기준으로 근속년수가 15년 이상인 직원에 대해
           아래의 예시처럼 사원정보를 조회하시오.
@@ -651,11 +660,34 @@ INSERT INTO SA
          FIRST_NAME || LAST_NAME AS 사원이름,
          TO_CHAR(HIRE_DATE, 'YYYY-MM-DD') AS 입사일,
          JOB_ID AS 직무,
+         (TO_NUMBER(TO_CHAR(LAST_DAY(SYSDATE), 'YYYY'))-TO_NUMBER(TO_CHAR(HIRE_DATE, 'YYYY')) + 1) AS 근속년수,
+         TRUNC((LAST_DAY(SYSDATE)-HIRE_DATE)+1) AS 근속일수,
+         TRUNC(MONTHS_BETWEEN(LAST_DAY(SYSDATE), HIRE_DATE)) AS 근속개월수
+         FROM EMP
+         WHERE (TO_NUMBER(TO_CHAR(LAST_DAY(SYSDATE), 'YYYY'))-TO_NUMBER(TO_CHAR(HIRE_DATE, 'YYYY')) + 1) >= 15;
+         
+     SELECT EMPLOYEE_ID AS 사원번호,
+         FIRST_NAME || LAST_NAME AS 사원이름,
+         TO_CHAR(HIRE_DATE, 'YYYY-MM-DD') AS 입사일,
+         JOB_ID AS 직무,
          (TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))-TO_NUMBER(TO_CHAR(HIRE_DATE, 'YYYY')) + 1) AS 근속년수,
          TRUNC((SYSDATE-HIRE_DATE)+1) AS 근속일수,
          TRUNC(MONTHS_BETWEEN(SYSDATE, HIRE_DATE)) AS 근속개월수
-         FROM EMP
-         WHERE (TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))-TO_NUMBER(TO_CHAR(HIRE_DATE, 'YYYY')) + 1) >= 15;
+         FROM EMP     
+         WHERE LAST_DAY(SYSDATE) >= ADD_MONTHS(HIRE_DATE, 179);
+         -- 현재 날짜가 HIRE_DATE에서 179개월을 더한 값보다 크다 = 근속개월이 12*15개월 초과
+         -- HIRE_DATE에서 179개월을 더한 값이 현재 날짜보다 작다
+         
+    SELECT EMPLOYEE_ID AS 사원번호,
+         FIRST_NAME || LAST_NAME AS 사원이름,
+         TO_CHAR(HIRE_DATE, 'YYYY-MM-DD') AS 입사일,
+         JOB_ID AS 직무,
+         (TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))-TO_NUMBER(TO_CHAR(HIRE_DATE, 'YYYY')) + 1) AS 근속년수,
+         TRUNC((SYSDATE-HIRE_DATE)+1) AS 근속일수,
+         TRUNC(MONTHS_BETWEEN(SYSDATE, HIRE_DATE)) AS 근속개월수
+         FROM EMP     
+         WHERE (MONTHS_BETWEEN(LAST_DAY(SYSDATE), HIRE_DATE)+1)/12 >= 15;
+         -- 현재 날짜와 HIRE_DATE 사이의 개월수(기간을 구하가 180개월보다 크다
          
   4. 1년간 총 지급액이 200,000달러 이상인 직원의 정보를 아래의 예시처럼 
           조회하시오.
@@ -675,7 +707,129 @@ INSERT INTO SA
          
   5. 1년간 총 지급액이 200,000달러 이상인 영업부 직원의 정보를 아래의 예시처럼 
           조회하시오.
-          SELECT * FROM EMP WHERE JOB_ID = 'SA_MAN';    
+          SELECT * FROM EMP WHERE JOB_ID = 'SA_MAN';  
+          SELECT * FROM EMP;
     -----------------------------------------------------------------------
       사원번호    사원이름      입사일   직무  근속일수   급여  인센티브  연봉
     -----------------------------------------------------------------------
+      SELECT EMPLOYEE_ID AS 사원번호,
+         FIRST_NAME || LAST_NAME AS 사원이름, 
+         TO_CHAR(HIRE_DATE, 'YYYY-MM-DD') AS 입사일,
+         JOB_ID AS 직무,
+         TRUNC((SYSDATE-HIRE_DATE)+1) AS 근속일수,
+         SALARY AS 급여,
+         COALESCE((SALARY * 12) * COMMISSION_PCT, 0) AS 인센티브,
+         COALESCE((SALARY * 12) * (1 + COMMISSION_PCT), (SALARY * 12)) AS 연봉
+         FROM EMP
+         WHERE JOB_ID = 'SA_MAN' AND COALESCE((SALARY * 12) * (1 + COMMISSION_PCT), (SALARY * 12)) >= 200000;
+         
+   /* GROUPING */
+   -- GROUPING 함수: 전체 레코드
+   -- GROUP BY 절: GROUP BY 절에 명시된 레코드 대상
+   
+   -- 평균 연봉, 최소 연봉, 최대 연봉
+   SELECT EMPLOYEE_ID AS "EMPCODE",
+   SALARY AS "SAL",
+   COMMISSION_PCT AS "INCEN",
+   COALESCE((SALARY*12) + ((SALARY*12)*COMMISSION_PCT), (SALARY*12), 0) AS "YEARPAY"
+   FROM EMP;
+   
+   SELECT * FROM EMP;
+   
+   -- 직무별
+   
+   -- 부서별
+   
+   -- 부서별 평균연봉, 최대연봉-최소연봉
+   
+   -- 부서 내 직무별(부서 안에서 직무 단위로 구분) 평균연봉
+   부서는 12개, 직무는 19개이기 때문에 두 개를 한 번에 구할 수는 없음(숫자가 일치해야 함)
+   
+   -- 부서 평균연봉이 10만 달러 이상인 부서 조회
+   함수 적용은 SELECT, WHERE, HAVING 절에서
+   
+   전체 레코드 대상 조건은 WHERE 절, 특정 레코드 대상 조건은 HAVING 절 (GROUP BY 와 함께 써야 함)
+   
+   /* 실습 */
+   1. 근속년수가 15년차 이상인 사원을 대상으로 평균 연봉, 최대 연봉, 최소 연봉을
+      조회하시오
+    --------------------------------
+        평균      최대      최소
+    --------------------------------
+    SELECT TRUNC(AVG(COALESCE((SALARY*12) + ((SALARY*12)*COMMISSION_PCT), (SALARY*12), 0))) AS "AVG_PAY",
+           TRUNC(MAX(COALESCE((SALARY*12) + ((SALARY*12)*COMMISSION_PCT), (SALARY*12), 0))) AS "MAX_PAY",
+           TRUNC(MIN(COALESCE((SALARY*12) + ((SALARY*12)*COMMISSION_PCT), (SALARY*12), 0))) AS "MIN_PAY"
+    FROM EMP
+    WHERE (MONTHS_BETWEEN(SYSDATE, HIRE_DATE)+1)/12 >= 15;
+    
+    2. 근속년수가 15년차 이하인 사원을 대상으로 부서별 평균 연봉, 최대 연봉, 
+       최소 연봉을 조회하시오
+    --------------------------------
+    부서ID     평균   최대   최소
+    --------------------------------
+    SELECT COALESCE(DEPARTMENT_ID,0) AS "DEPT",
+            TRUNC(AVG(COALESCE((SALARY*12) + ((SALARY*12)*COMMISSION_PCT), (SALARY*12), 0))) AS "AVG_PAY",
+           TRUNC(MAX(COALESCE((SALARY*12) + ((SALARY*12)*COMMISSION_PCT), (SALARY*12), 0))) AS "MAX_PAY",
+           TRUNC(MIN(COALESCE((SALARY*12) + ((SALARY*12)*COMMISSION_PCT), (SALARY*12), 0))) AS "MIN_PAY"
+    FROM EMP
+    WHERE (MONTHS_BETWEEN(SYSDATE, HIRE_DATE)+1)/12 <= 15
+    GROUP BY DEPARTMENT_ID;
+    
+    WHERE : 전체 레코드 대상
+    HAVING : GROUP 레코드 대상
+    
+    3. 근속년수가 15년차 이하인 사원을 대상으로 부서별 직무별 평균 연봉, 최대 연봉, 
+        최소 연봉을 조회하시오
+        -----------------------------------
+        부서ID   직무   평균   최대   최소
+        -----------------------------------
+   SELECT COALESCE(DEPARTMENT_ID, 0) AS "DEPT",
+            JOB_ID AS "JOB",
+            TRUNC(AVG(COALESCE((SALARY*12) + ((SALARY*12)*COMMISSION_PCT), (SALARY*12), 0))) AS "AVG_PAY",
+           TRUNC(MAX(COALESCE((SALARY*12) + ((SALARY*12)*COMMISSION_PCT), (SALARY*12), 0))) AS "MAX_PAY",
+           TRUNC(MIN(COALESCE((SALARY*12) + ((SALARY*12)*COMMISSION_PCT), (SALARY*12), 0))) AS "MIN_PAY"
+    FROM EMP
+    WHERE (MONTHS_BETWEEN(SYSDATE, HIRE_DATE)+1)/12 <= 15
+    GROUP BY DEPARTMENT_ID, JOB_ID;
+    
+    4. 전체 사원을 대상으로 부서별 직무별 평균 연봉, 평균근속년수, 인원수를 조회하시오
+           -------------------------------------------
+             부서ID   직무   평균   평균근속년수 인원수
+           -------------------------------------------
+    SELECT COALESCE(DEPARTMENT_ID, 0) AS "DEPT",
+            JOB_ID AS "JOB",
+            TRUNC(AVG(COALESCE((SALARY*12) + ((SALARY*12)*COMMISSION_PCT), (SALARY*12), 0))) AS "AVG_PAY",
+            TRUNC(AVG(TO_NUMBER(TO_CHAR(LAST_DAY(SYSDATE), 'YYYY'))-TO_NUMBER(TO_CHAR(HIRE_DATE, 'YYYY')) + 1)) AS "AVG_WORKYEAR",
+            COUNT(*) AS "MEMBERS"
+    FROM EMP
+    GROUP BY DEPARTMENT_ID, JOB_ID;
+    
+    5. 근속년수가 10년차 이상인 사원을 대상으로 직무별 평균 연봉과 인원수를 조회하시오
+           -----------------------------------
+              직무     평균   인원수
+           -----------------------------------
+     SELECT JOB_ID AS "JOB",
+            TRUNC(AVG(COALESCE((SALARY*12) + ((SALARY*12)*COMMISSION_PCT), (SALARY*12), 0))) AS "AVG_PAY",
+            COUNT(*) AS "MEMBERS"
+    FROM EMP
+    WHERE (MONTHS_BETWEEN(SYSDATE, HIRE_DATE)+1)/12 >= 10
+    GROUP BY JOB_ID;
+    
+    6. 근속년수가 30년차에 해당하는 해의 2월 마지막 날이 정년퇴직일이라 할 때
+           근속년수가 15년 이상인 직원 대상으로 정년퇴직일과 
+           정년퇴직일까지의 남은 일수를 조회하시오 // GROUP BY 내용 아님
+           ------------------------------------------------
+              직원ID  직원명    부서ID  정년퇴직일   남은일수
+           ------------------------------------------------
+    SELECT EMPLOYEE_ID AS "CODE",
+           FIRST_NAME || ' ' || LAST_NAME AS "NAME",
+           DEPARTMENT_ID AS "DEPT",
+           TO_CHAR(LAST_DAY(TO_DATE(TO_CHAR(TO_NUMBER(TO_CHAR(HIRE_DATE, 'YYYY'))+29) || '0201')), 'YYYY-MM-DD') AS "RETIRE_DATE",
+           TRUNC(LAST_DAY(TO_DATE(TO_CHAR(TO_NUMBER(TO_CHAR(HIRE_DATE, 'YYYY'))+29) || '0201'))-SYSDATE)+1 AS "D-DAY"
+           -- +1인지 -1인지 아니면 +- 불요한지 확인 필요
+    FROM EMP
+    WHERE (MONTHS_BETWEEN(SYSDATE, HIRE_DATE)+1)/12 >= 15;
+    SELECT * FROM EMP;
+    
+    
+   ~ 내일부터 JOIN할 거라 1교시에 DBA는 데이터 입력할 게 있습니다 ~
