@@ -833,3 +833,220 @@ INSERT INTO SA
     
     
    ~ 내일부터 JOIN할 거라 1교시에 DBA는 데이터 입력할 게 있습니다 ~
+   
+   ------------------------------------------------------------------------------------------------------------------
+   -- 20201216
+   --준비작업
+   delete from od;
+   delete from "OR";
+   delete from ba;
+   delete from sa;
+   delete from go;
+   delete from se;
+   delete from al;
+   delete from mm;
+   commit;
+   
+   
+   --테이블 구조 변경
+   alter table members
+   add mm_state  nchar(1) default 'A';
+   alter table seller
+   add se_state nchar(1) default 'A';
+   commit;
+   
+   --데이터 체크
+   select * from mm;
+   select * from go;
+   select * from se;
+    select * from sa;
+   select * from al;
+   select * from ba;
+   select * from "OR";
+   select * from od;
+   
+  
+   -- 테이블 삭제
+drop table members cascade constraint;
+drop table orderdetail;
+drop table basket;
+drop table sales;
+drop table goods;
+drop table seller;
+drop table accesslog;
+drop table orders cascade constraint;
+commit;
+
+
+
+--파일 받으면 dba계정으로 바꿈
+--하다 실패하면 drop
+
+-- dev에 권한 부여
+grant select, insert, update on dba5.members to unity5;
+grant select, insert, update on dba5.accesslog to unity5;
+grant select, insert, update on dba5.basket to unity5;
+grant select, insert, update on dba5.goods to unity5;
+grant select, insert, update on dba5.orders to unity5;
+grant select, insert, update on dba5.orderdetail to unity5;
+grant select, insert, update on dba5.sales to unity5;
+grant select, insert, update on dba5.seller to unity5;
+commit;
+ 
+/* join : 두 개의 테이블에 있는 데이터를 하나의 테이블에 있는 데이터인양 모아놓는 기술.
+서브쿼리 : 조건절
+ -조인(여러개의 테이블을 하나로 합쳐 조회)과 서브쿼리(조회하기 위한 하나의 특정 데이터를 가져옴)는 다른 개념.
+ -개인 블로그 하나 새롭게 개설하고, 매일의 학습 내용을 올리세요(취업 대비용).
+ 
+ 조인은 제약조건이 없어도 실행 가능하다.
+ 조인 조건 : 두 개의 테이블에는 공통된 컬럼이 존재
+ 조인시 알리아스 쓸 수 있음(우리는 이미 퍼블릭 시노님을 사용하고 있어서 상관없음).
+ select시 중복 컬럼이 있다면 검색 목적에 맞는 걸 쓰는걸 권장.
+*/
+
+/* 실습
+1. 특정 회원의 2020년 11월 로그인 정보를 조회하시오
+
+SELECT  AL.AL_ID AS "MID",
+        MM.MM_NAME AS "MNAME",
+        AL.AL_TIME AS "ACCESSTIME",
+        DECODE(MM.MM_STATE, 'A', '활동', '휴면') AS "STATE"
+FROM MM INNER JOIN AL ON MM.MM_ID = AL.AL_ID
+WHERE TO_CHAR(AL.AL_TIME, 'YYYYMMDD') = '20201108' AND AL.AL_TYPE = 1;
+
+ -------------------------------------------------
+ 회원ID   회원명     액세스타임       회원상태
+ mm_id    mm_name   al_time        mm_state
+ al_id
+ -------------------------------------------------
+ */
+SELECT  AL.AL_ID AS "MID",
+        MM.MM_NAME AS "MNAME",
+        AL.AL_TIME AS "ACCESSTIME",
+        DECODE(MM.MM_STATE, 'A', '활동', '휴면') AS "STATE"
+FROM MM INNER JOIN AL ON MM.MM_ID = AL.AL_ID
+WHERE TO_CHAR(AL.AL_TIME, 'YYYYMM') = '202011' AND AL.AL_TYPE = 1 AND MM.MM_ID='MM1';
+ 
+/* 2. 활동중인 회원(WHERE)의 2020년 11월 ~ 12월 까지의(WHERE) 로그인(WHERE) 횟수(SELECT)를 조회하시오 + GROUP BY
+    ---------------------------------------------------
+      회원ID      회원명     전화번호     로그인횟수      활동중
+      MM_ID     MM_NAME     MM_PHONE    AL_TYPE=1    MM_STATE
+      AL_ID
+    ---------------------------------------------------
+    '20181201' START_DATE,'2019-12-13' END_DATE FROM DUAL 
+    AL_MMID = 'YUN';
+*/
+SELECT * FROM MM;
+
+SELECT AL.AL_ID AS "MID",
+        MM.MM_NAME AS "MNAME",
+        MM.MM_PHONE AS "MPHONE",
+        COUNT (AL.AL_TYPE) AS "COUNTLOGIN"
+        
+FROM MM INNER JOIN AL ON MM.MM_ID = AL.AL_ID
+WHERE(TO_CHAR(AL.AL_TIME, 'YYYYMM') >='202011' AND TO_CHAR(AL.AL_TIME, 'YYYYMM') <='202012')
+            AND AL.AL_TYPE = 1 AND MM.MM_STATE='A'
+            GROUP BY AL.AL_ID, MM.MM_NAME, MM.MM_PHONE, AL.AL_TYPE;
+            
+   ----------------------------------------------------
+   
+SELECT  AL.AL_ID AS "MID",
+        MM.MM_NAME AS "MNAME",
+        MM.MM_PHONE AS "MPHONE",
+        COUNT (AL.AL_TYPE) AS "COUNTLOGIN",
+        MM.MM_STATE AS "STATE"
+FROM MM  INNER JOIN AL ON MM.MM_ID = AL.AL_ID
+--GROUP BY MM.MM_ID
+WHERE (TO_CHAR(AL.AL_TIME, 'YYYYMM') ='202011' OR TO_CHAR(AL.AL_TIME, 'YYYYMM') ='202012')
+AND AL.AL_TYPE = 1 AND MM.MM_STATE='A'
+GROUP BY AL.AL_ID, MM.MM_NAME, MM.MM_PHONE, AL.AL_TYPE, MM.MM_STATE;
+
+/* 3. 특정회원(WHERE)의 2020년 12월(WHERE) 주문횟수(SELECT)를 조회하시오 
+    ---------------------------------------------------
+      회원ID      회원명     주문횟수 
+      MM_ID     MM_NAME     OD_ORDATE
+        G            G            GF
+    ---------------------------------------------------
+
+*/
+
+SELECT OD.OD_ORMMID AS "OID", 
+        MM.MM_NAME AS "MNAME",
+       COUNT(*) AS "COUNT"
+FROM MM INNER JOIN OD ON MM.MM_ID = OD.OD_ORMMID
+WHERE (TO_CHAR(OD.OD_ORDATE, 'YYYYMM') = '202012') AND MM.MM_ID='MM1'
+GROUP BY OD.OD_ORMMID, MM.MM_NAME;
+
+
+/* 4. 회원들의 주문정보 조회
+    ---------------------------------------------------
+      회원ID      회원명      회원상태    주문일자       상품명         상품가격        구매수량        합계      판매자명
+      MM_ID     MM_NAME      MM_STATE    OR,OD      GO_NAME         SA_PRICE       OD     SA * QUANTITY         SE
+      OD          
+    ---------------------------------------------------
+     다중조인 : OD + SA + GO + SE + GO (5회)
+     FROM OD INNER JOIN SA ON OD.OD_SAGOCODE = SA.SA_GOCODE AND OD
+        
+        중요 ) DBA : CREATE VIEW(DBA만 뷰 생성가능)
+*/
+
+CREATE OR REPLACE VIEW ORDERSINFO -- 뷰 생성(테이블을 조인해서 SELECT절을 조회하는 뷰를 생성)
+AS
+SELECT  OD.OD_ORMMID AS "MID",
+        MM.MM_NAME AS "MNAME",
+        MM.MM_STATE AS "MSTATE",
+        OD.OD_ORDATE AS "DATE",
+        SA.SA_GOCODE AS "GCODE",
+        GO.GO_NAME AS "GNAME",
+        SA.SA_PRICE AS "PRICE",
+        OD.OD_QUANTITY AS "QUANTITY",
+        SA.SA_PRICE * OD.OD_QUANTITY AS "AMOUNT",
+        SE.SE_CODE AS "SECODE",
+        SE.SE_NAME AS "SNAME"
+FROM OD INNER JOIN SA ON OD.OD_SAGOCODE = SA.SA_GOCODE AND OD.OD_SASECODE = SA.SA_SECODE
+        INNER JOIN GO ON OD.OD_SAGOCODE = GO.GO_CODE
+        INNER JOIN SE ON OD.OD_SASECODE = SE.SE_CODE
+        INNER JOIN MM ON OD.OD_ORMMID = MM.MM_ID;
+        
+        
+GRANT SELECT ON ORDERSINFO TO UNITY5;     --DEV에게 테이블 뷰 조회 권한 부여 
+
+/* VIEW의 활용 */
+SELECT * FROM DBA5.ORDERSINFO;
+
+/* 실습 1. 특정 판매자(SE)의 상품별 판매개수 정보(OD)를 조회 
+    ----------------------------------------
+      회사코드  회사명   상품명   누적판매수
+      SE_CODE SE_NAME GO_NAME  합계
+    ----------------------------------------
+
+*/
+SELECT * FROM SE;
+
+SELECT SECODE, SNAME, GNAME, COUNT(*) AS "ALL_SALES"
+FROM DBA5.ORDERSINFO
+WHERE SECODE='1000112345'
+GROUP BY SECODE, SNAME, GNAME;
+
+------------------------------------ 정답
+SELECT SECODE, SNAME, GNAME, SUM(QUANTITY) AS "SUM" -- GCODE는 PK에 해당 안되서 조회 안함
+FROM DBA5.ORDERSINFO
+WHERE SECODE='1000112345'
+GROUP BY SECODE, SNAME, GCODE, GNAME; --상품 이름은 같고 상품 코드는 다른 경우를 위해 GCODE 삽입
+
+/* 실습 2. 특정 판매자의 상품별 판매개수가 특정개수 이상인 정보를 조회 
+    ----------------------------------------
+      회사코드  회사명   상품명   누적판매수
+    ----------------------------------------
+*/
+SELECT SECODE, SNAME, GNAME,  SUM(QUANTITY) AS "SUM"
+FROM DBA5.ORDERSINFO
+WHERE SECODE='1000112345'
+GROUP BY SECODE, SNAME, GCODE, GNAME 
+HAVING COUNT(*)>=5;
+
+
+/* 남은 오라클 수업
+1. OUTER JOIN(내일)
+2. TRIGGER, PROCEDURE(모레)
+*/
