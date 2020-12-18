@@ -1,0 +1,70 @@
+JAVA  Project
+  + package >> default >> project name 
+     --> 유사한 기능을 가진 Class 의 묶음 단위
+     --> 보안항목으로 사용
+     ex> - load 
+     	   - frontend(입출력 구현) 
+     	   - backend(비즈니스로직)
+              .controller(프론트엔드와의 통신)
+              .services(비즈니스 로직)  
+              
+   + JAVA PROGRAM exec
+       .java --> .class --> loading --> exec
+      - Java Class : static void main() 
+   + Constructor
+      - 클래스명과 일치
+      - only void 타입
+      - 단, 한번만 실행 :: 클래스 호출 시
+      - 클래스의 멤버를 Loading
+         + Field      >>   Instance Variable >> 클래스가 종료될 때 까지 사용 가능
+         + Method
+      - Class 호출시 heap에 가장 먼저 loading 되는 메서드 
+      
+      
+      
+:: Data - Convert
+  cast : 같은 공간의 데이터끼리 변환
+    upCast --> implicit type;  
+    downCast --> explicit type
+    	int i = 10; 
+  		short s = (short)i;  10  --> downCast
+  		i = s;  --> upCast
+  parse : 다른 공간의 데이터끼리 변환
+    heap --> stack
+   		Integer.parseInt(String);
+   		Short.praseShort(String);
+   	stact  --> heap
+  		1 + "" --> "1"
+
+Access Modifier
+  public : 외부 접근 가능
+  default : 같은 패키지안에 있는 클래스끼리 접근 가능
+  protected : 상속자는 접근 가능
+  private  : 외부접근불가
+
+StringBuffer
+StringBuilder
+  
+  -- 시작
+ ᕦ(ò_óˇ)ᕤ___________________________________________________________
+ 
+ 	                           HoonZzang Calc
+ 	 
+                                                     Designed by Hz
+  ____________________________________________________________________
+   
+   1. 연산시작                      0. 종료
+  ______________________________________________ Select : 1
+  
+  ᕦ(ò_óˇ)ᕤ___________________________________________________________
+ 
+ 	                           HoonZzang Calc
+ 	 
+                                                     Designed by Hz
+   ____________________________________________________________________
+  
+   10 + 3 = 13
+   ------------------------------------- Confirm(press any key) : _
+    
+  
+  
