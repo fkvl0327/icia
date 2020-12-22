@@ -1194,6 +1194,7 @@ SELECT * FROM "OR";
 
 ---------------------------------
 -- 2020.12.18 금
+
 /* PL, SQL 구문 실행하고 나면 구문별로 실행이 안 되니까 PL 구문과 EXECUTE 구문을 각각의 파일로 둡시다 */
 
 GRANT CREATE PROCEDURE TO yun, sol, hyeonha, hong;
@@ -1307,7 +1308,7 @@ REQUEST_DATA      OUT     SYS_REFCURSOR
 IS
 BEGIN
         OPEN REQUEST_DATA FOR
-        SELECT * FROM SALESINFO;
+        SELECT * FROM SALESINFO WHERE SECODE = SCODE;
 END V_P_SALESINFO;
 -- 최근 핀테크에서 프로시저 응용(오픈뱅킹 등)
 
@@ -1365,3 +1366,7 @@ ROLLBACK;
 GRANT CREATE ANY TRIGGER TO HONG, YUN, HYEONHA, SOL;
 
 SELECT * FROM SA;
+
+
+/* 수업 정리 */
+- PL/SQL: PROCEDURE로 INSERT, UPDATE, SELECT하기
