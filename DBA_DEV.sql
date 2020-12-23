@@ -1370,3 +1370,22 @@ SELECT * FROM SA;
 
 /* 수업 정리 */
 - PL/SQL: PROCEDURE로 INSERT, UPDATE, SELECT하기
+---------------------------------------------------
+
+2020-12-23(수)
+
+SELECT COUNT(*) FROM MM WHERE MM_ID = 'MM1'; -- 아이디 유무 확인
+SELECT MM_STATE FROM MM WHERE MM_ID = 'MM1'; -- 현재 활성화 여부 확인
+SELECT COUNT(*) FROM MM WHERE MM_ID = 'MM1' AND MM_PASSWORD = '1234'; -- ID/PW 일치 여부 확인
+INSERT INTO AL(AL_ID, AL_TIME, AL_TYPE) VALUES('', DEFAULT, 1); -- AccessLog Insert
+COMMIT;
+SELECT MM_NAME FROM MM WHERE MM_ID = 'MM1'; -- 이름 출력
+SELECT MAX(AL_TIME) FROM AL WHERE AL_ID = 'MM1' AND AL_TYPE = 1; -- (최근)접속시간 출력
+-- 이렇게 조회하는 내용은 JOIN으로 한 번에도 가능
+-->
+SELECT MM.MM_NAME AS "MNAME",
+       MAX(AL.AL_TIME) AS "ALTIME"
+FROM MM INNER JOIN AL ON MM.MM_ID = AL.AL_ID
+WHERE AL.AL_ID = 'MM1' AND AL.AL_TYPE=1
+GROUP BY MM.MM_NAME;
+
