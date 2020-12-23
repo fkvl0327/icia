@@ -7,6 +7,8 @@
 	<title>로그인 후 페이지</title>
 	</head>
 	<body>
-		${message}
+		${mId }
+		${mName }
+		${accessTime }
 	</body>
 </html>
