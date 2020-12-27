@@ -58,9 +58,9 @@ public class Authentication {
 						dao.setTransaction(true);
 						// 회원이름, 로그인 시간 추출
 						req.setAttribute("mId", this.searchMemberInfo(authBean).get(0).getmId());
-						req.setAttribute("mName", this.searchMemberInfo(authBean).get(1).getmName());
-						req.setAttribute("accessTime", this.searchMemberInfo(authBean).get(2).getAccessTime());
-
+						req.setAttribute("mName", this.searchMemberInfo(authBean).get(0).getmName());
+						req.setAttribute("accessTime", this.searchMemberInfo(authBean).get(0).getAccessTime());
+						System.out.println(this.searchMemberInfo(authBean).size());
 						// Action 설정
 						action.setRedirect(false);
 						action.setPage("response.jsp");

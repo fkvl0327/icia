@@ -51,21 +51,20 @@ public class DataAccessObject {
 
 		}
 	}
-	
+
 	public void autoCommit(boolean isAuto) {
 		try {
 			this.connection.setAutoCommit(isAuto);
 		} catch (SQLException e) {
 		}
 	}
-	
+
 	// Transaction 처리 :: COMMIT || ROLLBACK
-	public void setTransaction(boolean trans){
+	public void setTransaction(boolean trans) {
 		try {
-			if(trans) {
+			if (trans) {
 				this.connection.commit();
-			}
-			else {
+			} else {
 				this.connection.rollback();
 			}
 		} catch (SQLException e) {
@@ -77,20 +76,20 @@ public class DataAccessObject {
 		this.pstatement = null;
 		this.rs = null;
 		int count = 0;
-		
+
 		String query = "SELECT COUNT(*) AS CNT FROM MM WHERE MM_ID = ?";
 		try {
 			this.pstatement = this.connection.prepareStatement(query);
 			this.pstatement.setNString(1, auth.getmId());
-			
+
 			this.rs = this.pstatement.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				count = rs.getInt("CNT");
 			}
 		} catch (Exception e) {
-			
+
 		}
-			
+
 		return count;
 	}
 
@@ -99,19 +98,19 @@ public class DataAccessObject {
 		this.pstatement = null;
 		this.rs = null;
 		int count = 0;
-		
+
 		String query = "SELECT COUNT(*) AS CNT FROM MM WHERE MM_ID = ? AND MM_STATE = ?";
-		
+
 		try {
 			this.pstatement = this.connection.prepareStatement(query);
 			this.pstatement.setNString(1, auth.getmId());
 			this.pstatement.setNString(2, "A");
 			this.rs = this.pstatement.executeQuery();
 
-			while(rs.next()) {
+			while (rs.next()) {
 				count = rs.getInt("CNT");
 			}
-			
+
 		} catch (Exception e) {
 		}
 		return count;
@@ -122,19 +121,19 @@ public class DataAccessObject {
 		this.pstatement = null;
 		this.rs = null;
 		int count = 0;
-		
+
 		String query = "SELECT COUNT(*) AS CNT FROM MM WHERE MM_ID = ? AND MM_PASSWORD = ?";
-		
+
 		try {
 			this.pstatement = this.connection.prepareStatement(query);
 			this.pstatement.setNString(1, auth.getmId());
 			this.pstatement.setNString(2, auth.getmPassword());
 			this.rs = this.pstatement.executeQuery();
 
-			while(rs.next()) {
+			while (rs.next()) {
 				count = rs.getInt("CNT");
 			}
-			
+
 		} catch (Exception e) {
 		}
 		return count;
@@ -144,15 +143,16 @@ public class DataAccessObject {
 	public int insAccessLog(AuthBean auth) {
 		this.pstatement = null;
 		int count = 0;
-		
+
 		String dml = "INSERT INTO AL(AL_ID, AL_TIME, AL_TYPE) VALUES(?, DEFAULT, ?)";
 		try {
 			this.pstatement = this.connection.prepareStatement(dml);
 			this.pstatement.setNString(1, auth.getmId());
 			this.pstatement.setInt(2, auth.getAccessType());
 			count = this.pstatement.executeUpdate();
-			
-		} catch (Exception e) {e.printStackTrace();
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return count;
 	}
@@ -162,15 +162,15 @@ public class DataAccessObject {
 		ArrayList<AuthBean> memberList = new ArrayList<AuthBean>();
 		this.pstatement = null;
 		this.rs = null;
-		
-		String query = "SELECT * FROM DBA5.MINFO WHERE MID = ? AND ALTYPE = ?";
+
+		String query = "SELECT * FROM DBA5.MINFO WHERE MID=? AND ALTYPE=?";
 		try {
 			this.pstatement = this.connection.prepareStatement(query);
 			this.pstatement.setNString(1, auth.getmId());
 			this.pstatement.setInt(2, auth.getAccessType());
 			this.rs = this.pstatement.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				AuthBean ab = new AuthBean();
 				ab.setmId(rs.getNString("MID"));
 				ab.setmName(rs.getNString("MNAME"));
