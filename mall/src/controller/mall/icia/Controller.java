@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import auth.services.mall.icia.Authentication;
 import beans.Action;
 
-@WebServlet({"/LogIn", "/LogOut", "/Join", "/SearchGoods"}) // 이름을 만들 때 일관된 규칙을 정할 것
-// 본 실습 시에는 클래스이름과 동일하게 대문자로 시작하게끔 정했음
+@WebServlet({"/LogIn", "/LogOut", "/Join", "/SearchGoods"})
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -40,13 +39,13 @@ public class Controller extends HttpServlet {
 
 		if(reqValue.equals("LogIn")) {
 			auth = new Authentication();		
-			action = auth.entrance(request, 1);
+			action = auth.entrance(request);
 		} else if(reqValue.equals("LogOut")) {
 			auth = new Authentication();		
-			action = auth.entrance(request, 2);
+			action = auth.entrance(request);
 		} else if(reqValue.equals("Join")) {
 			auth = new Authentication();		
-			action = auth.entrance(request, 3);
+			action = auth.entrance(request);
 		}
 		
 		// Response Type Routing
@@ -56,7 +55,6 @@ public class Controller extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher(action.getPage());
 			dispatcher.forward(request, response);
 		}
-
 
 	}
 

@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,21 +17,11 @@
     <header id="header">
         <h1><a href="https://www.icia.co.kr/"><img src="image/icia-logo.png" alt="어서와~~~~~"></a></h1>
     </header>
-    <!-- Section -->
+    <!-- Secion -->
     <section id="section">
-        <form action="LogIn" method="post">
-            <div class="id">
-                <h3 class="join__title"><label for="id">아이디</label></h3>
-                <span class="input__space"><input type="text" name="accessInfo" id="id" maxlength="10" title="ID" required></span>
+            <div class="userInfo">
+				<marquee>${mName }(${mId })님은 ${accessTime }에 로그인 하셨습니다.</marquee>                
             </div>
-            <div class="pw">
-                <h3 class="join__title"><label for="password">비밀번호</label></h3>
-                <span class="input__space"><input type="password" name="accessInfo" id="password" maxlength="10" title="비밀번호 입력" required></span>
-            </div>
-            <div class="submit">
-                <button type="submit" id="submit">로그인</button>
-            </div>
-        </form>
     </section>
     <!-- Footer -->
     <footer id="footer">

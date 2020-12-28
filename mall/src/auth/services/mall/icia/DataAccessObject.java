@@ -18,79 +18,77 @@ import beans.AuthBean;
  * 	  PreparedStatement --> Where절이 있는 경우 유용
  * 4. execute --> query -->  ResultSet  --> Record단위로 Bean에 저장  --> ArrayList
  * 	  executeUpdate --> DML  --> 적용된 레코드 수를 int로 리턴
- * 
+ * 5. Transcation
+ * 6. Connection.close()
  * */
 public class DataAccessObject {
 	private Connection connection;
 	private Statement statement;
 	private PreparedStatement pstatement;
-	private ResultSet rs;
 	private int updRecords;
-
+	private ResultSet rs;
+	
 	public DataAccessObject() {
 
 	}
 
-	// 오라클 연결 :: Connection 개체 생성
+	// 오라클 연결  :: Connection 개체 생성
 	public void getConnection() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			this.connection = DriverManager.getConnection("jdbc:oracle:thin:@106.243.194.230:7005:xe", "yun", "1234");
-		} catch (Exception e) {
-		}
+			connection = DriverManager.getConnection("jdbc:oracle:thin:@106.243.194.230:7007:xe", "zzang", "1234");
+		}catch(Exception e) {
 
+		}
+	}
+	
+	public void setAutoCommit(boolean isAuto) {
+		try {
+			this.connection.setAutoCommit(isAuto);
+		} catch (SQLException e) {e.printStackTrace();}
+	}
+
+	// Transaction 처리 :: COMMIT  || ROLLBACK
+	public void setTransaction(boolean isCommit) {
+		try {
+			if(isCommit) {
+				this.connection.commit();
+			} else {
+				this.connection.rollback();
+			}
+		}catch(Exception e) {}
 	}
 
 	// 오라클 연결 해제 :: Connection.close()
 	public void closeConnection() {
 		try {
-			if (!this.connection.isClosed()) { // connection이 이미 닫혀 있는 경우에는 connection.close()를 시도하지 않는다
+			if(!this.connection.isClosed()) {
 				this.connection.close();
 			}
-		} catch (Exception e) {
-
-		}
-	}
-
-	public void autoCommit(boolean isAuto) {
-		try {
-			this.connection.setAutoCommit(isAuto);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	// Transaction 처리 :: COMMIT || ROLLBACK
-	public void setTransaction(boolean trans) {
-		try {
-			if (trans) {
-				this.connection.commit();
-			} else {
-				this.connection.rollback();
-			}
-		} catch (SQLException e) {
-		}
-	}
 
-	// 아이디 유무 확인 (+아이디 중복 확인)
+	// 아이디 유무 확인 + 아이디 중복 체크
 	public int isMember(AuthBean auth) {
 		this.pstatement = null;
 		this.rs = null;
 		int count = 0;
-
+		
 		String query = "SELECT COUNT(*) AS CNT FROM MM WHERE MM_ID = ?";
 		try {
 			this.pstatement = this.connection.prepareStatement(query);
 			this.pstatement.setNString(1, auth.getmId());
-
+			
 			this.rs = this.pstatement.executeQuery();
-			while (rs.next()) {
-				count = rs.getInt("CNT");
+			while(rs.next()) {
+				count = rs.getInt("CNT");		
 			}
-		} catch (Exception e) {
-
-		}
-
+			
+		} catch (SQLException e) {e.printStackTrace();}
+		
 		return count;
 	}
 
@@ -99,52 +97,95 @@ public class DataAccessObject {
 		this.pstatement = null;
 		this.rs = null;
 		int count = 0;
-
 		String query = "SELECT COUNT(*) AS CNT FROM MM WHERE MM_ID = ? AND MM_STATE = ?";
-
+		
 		try {
 			this.pstatement = this.connection.prepareStatement(query);
 			this.pstatement.setNString(1, auth.getmId());
 			this.pstatement.setNString(2, "A");
+			
 			this.rs = this.pstatement.executeQuery();
-
-			while (rs.next()) {
+			while(rs.next()) {
 				count = rs.getInt("CNT");
 			}
-
-		} catch (Exception e) {
-		}
+		} catch (SQLException e) {e.printStackTrace();}
+		
 		return count;
 	}
-
 	// userId + userPassword 일치여부
 	public int isAccess(AuthBean auth) {
 		this.pstatement = null;
 		this.rs = null;
 		int count = 0;
-
 		String query = "SELECT COUNT(*) AS CNT FROM MM WHERE MM_ID = ? AND MM_PASSWORD = ?";
-
+		
 		try {
 			this.pstatement = this.connection.prepareStatement(query);
 			this.pstatement.setNString(1, auth.getmId());
 			this.pstatement.setNString(2, auth.getmPassword());
+			
 			this.rs = this.pstatement.executeQuery();
-
-			while (rs.next()) {
+			while(rs.next()) {
 				count = rs.getInt("CNT");
 			}
-
-		} catch (Exception e) {
-		}
+		} catch (SQLException e) {e.printStackTrace();}
+		
 		return count;
 	}
+
+	// ACCESSLOG INS 
+	public int insAccessLog(AuthBean auth) {
+		this.pstatement = null;
+		int count = 0;
+		
+		String dml = "INSERT INTO AL(AL_ID, AL_TIME, AL_TYPE) VALUES(?, DEFAULT, ?)";
+		
+		try {
+			this.pstatement = this.connection.prepareStatement(dml);
+			this.pstatement.setNString(1, auth.getmId());
+			this.pstatement.setInt(2, auth.getAccessType());
+						
+			count = this.pstatement.executeUpdate();
+			
+		} catch (SQLException e) {e.printStackTrace();}
+		
+		return count;
+	}
+
+	// 회원정보 추출 :: 회원아이디, 회원이름, 로그인시간
+	public ArrayList<AuthBean> searchMemberInfo(AuthBean auth) {
+		ArrayList<AuthBean> memberList = new ArrayList<AuthBean>();
+		
+		this.pstatement = null;
+		this.rs = null;
+		String query = "SELECT * FROM MINFO WHERE MID = ? AND ALTYPE = ?";
+		
+		try {
+			this.pstatement = this.connection.prepareStatement(query);
+			this.pstatement.setNString(1, auth.getmId());
+			this.pstatement.setInt(2, auth.getAccessType());
+			
+			this.rs = this.pstatement.executeQuery();
+			while(rs.next()) {
+				AuthBean ab = new AuthBean();
+				ab.setmId(rs.getNString("MID"));
+				ab.setmName(rs.getNString("MNAME"));
+				ab.setAccessTime(rs.getNString("ALTIME"));
+				
+				memberList.add(ab);
+			}
+		} catch (SQLException e) {}
+		
+		
+		return memberList;
+	} 
 	
 	public int joinMember(AuthBean auth) {
 		this.pstatement = null;
 		int count = 0;
-
-		String dml = "INSERT INTO MM(MM_ID, MM_PASSWORD, MM_NAME, MM_PHONE, MM_STATE) VALUES(?, ?, ?, ?, ?)";
+		
+		String dml = "INSERT INTO MM(MM_ID, MM_PASSWORD, MM_NAME, MM_PHONE, MM_STATE) VALUES(?, ?, ?, ? , ?)";
+		
 		try {
 			this.pstatement = this.connection.prepareStatement(dml);
 			this.pstatement.setNString(1, auth.getmId());
@@ -152,56 +193,11 @@ public class DataAccessObject {
 			this.pstatement.setNString(3, auth.getmName());
 			this.pstatement.setNString(4, auth.getPhone());
 			this.pstatement.setNString(5, auth.getState());
+						
 			count = this.pstatement.executeUpdate();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			
+		} catch (SQLException e) {e.printStackTrace();}
+		
 		return count;
-	}
-
-	// ACCESSLOG INS
-	public int insAccessLog(AuthBean auth) {
-		this.pstatement = null;
-		int count = 0;
-
-		String dml = "INSERT INTO AL(AL_ID, AL_TIME, AL_TYPE) VALUES(?, DEFAULT, ?)";
-		try {
-			this.pstatement = this.connection.prepareStatement(dml);
-			this.pstatement.setNString(1, auth.getmId());
-			this.pstatement.setInt(2, auth.getAccessType());
-			count = this.pstatement.executeUpdate();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return count;
-	}
-
-	// 회원정보 추출 :: 회원아이디, 회원이름, 로그인시간
-	public ArrayList<AuthBean> searchMemberInfo(AuthBean auth) {
-		ArrayList<AuthBean> memberList = new ArrayList<AuthBean>();
-		this.pstatement = null;
-		this.rs = null;
-
-		String query = "SELECT * FROM DBA5.MINFO WHERE MID=? AND ALTYPE=?";
-		try {
-			this.pstatement = this.connection.prepareStatement(query);
-			this.pstatement.setNString(1, auth.getmId());
-			this.pstatement.setInt(2, auth.getAccessType());
-			this.rs = this.pstatement.executeQuery();
-
-			while (rs.next()) {
-				AuthBean ab = new AuthBean();
-				ab.setmId(rs.getNString("MID"));
-				ab.setmName(rs.getNString("MNAME"));
-				ab.setAccessTime(rs.getNString("ALTIME"));
-				memberList.add(ab);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return memberList;
 	}
 }
