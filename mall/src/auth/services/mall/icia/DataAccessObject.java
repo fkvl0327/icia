@@ -138,12 +138,11 @@ public class DataAccessObject {
 		this.pstatement = null;
 		int count = 0;
 		
-		String dml = "INSERT INTO AL(AL_ID, AL_TIME, AL_TYPE) VALUES(?, DEFAULT, ?)";
+		String dml = "INSERT INTO AL(AL_ID, AL_TIME, AL_TYPE) VALUES(?, DEFAULT, 1)";
 		
 		try {
 			this.pstatement = this.connection.prepareStatement(dml);
 			this.pstatement.setNString(1, auth.getmId());
-			this.pstatement.setInt(2, auth.getAccessType());
 						
 			count = this.pstatement.executeUpdate();
 			
@@ -158,12 +157,11 @@ public class DataAccessObject {
 		
 		this.pstatement = null;
 		this.rs = null;
-		String query = "SELECT * FROM MINFO WHERE MID = ? AND ALTYPE = ?";
+		String query = "SELECT * FROM MINFO WHERE MID = ? AND ALTYPE = 1";
 		
 		try {
 			this.pstatement = this.connection.prepareStatement(query);
 			this.pstatement.setNString(1, auth.getmId());
-			this.pstatement.setInt(2, auth.getAccessType());
 			
 			this.rs = this.pstatement.executeQuery();
 			while(rs.next()) {

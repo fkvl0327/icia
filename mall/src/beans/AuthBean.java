@@ -1,32 +1,27 @@
 package beans;
 
 public class AuthBean {
-	private String mId;
-	private String mPassword;
-	private String mName;
-	private String accessTime;
-	private String phone;
-	private String state;
-	private int accessType;
+	String mId;
+	String mPassword;
+	String mName;
+	String accessTime;
+	String phone;
+	String state;
 	
-	public String getState() {
-		return state;
-	}
-	public void setState(String state) {
-		this.state = state;
-	}
 	public String getPhone() {
 		return phone;
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public int getAccessType() {
-		return accessType;
+	public String getState() {
+		return state;
 	}
-	public void setAccessType(int accessType) {
-		this.accessType = accessType;
+	public void setState(String state) {
+		this.state = state;
 	}
+	int accessType;
+	
 	public String getmName() {
 		return mName;
 	}
@@ -38,6 +33,12 @@ public class AuthBean {
 	}
 	public void setAccessTime(String accessTime) {
 		this.accessTime = accessTime;
+	}
+	public int getAccessType() {
+		return accessType;
+	}
+	public void setAccessType(int accessType) {
+		this.accessType = accessType;
 	}
 	public String getmId() {
 		return mId;
@@ -51,4 +52,5 @@ public class AuthBean {
 	public void setmPassword(String mPassword) {
 		this.mPassword = mPassword;
 	}
+	
 }

@@ -1,14 +1,14 @@
 package beans;
 
 public class Action {
-	private boolean isRedirect;
+	private boolean redirect;
 	private String page;
 	
 	public boolean isRedirect() {
-		return isRedirect;
+		return redirect;
 	}
-	public void setRedirect(boolean isRedirect) {
-		this.isRedirect = isRedirect;
+	public void setRedirect(boolean redirect) {
+		this.redirect = redirect;
 	}
 	public String getPage() {
 		return page;
@@ -16,6 +16,4 @@ public class Action {
 	public void setPage(String page) {
 		this.page = page;
 	}
-	
-	
 }
