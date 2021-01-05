@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import auth.services.mall.icia.Authentication;
 import beans.Action;
+import search.services.mall.icia.GoodsSearch;
 
-@WebServlet({ "/Main", "/LogInForm", "/LogIn", "/JoinForm", "/Join", "/LogOut" })
+@WebServlet({ "/Main", "/LogInForm", "/LogIn", "/JoinForm", "/Join",
+				"/LogOut", "/Search" })
 public class FrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -35,6 +37,8 @@ public class FrontController extends HttpServlet {
 	private void adaptiveRouting(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		Action action = null;
 		Authentication auth;
+		GoodsSearch goods;
+		
 		String reqValue = req.getRequestURI().substring(req.getContextPath().length() + 1);
 		// 클라이언트 요청
 		// Get Type
@@ -66,6 +70,9 @@ public class FrontController extends HttpServlet {
 			} else if (reqValue.equals("LogOut")) {
 				auth = new Authentication();
 				action = auth.entrance(req);
+			} else if (reqValue.equals("Search")) {
+				goods = new GoodsSearch();
+				action = goods.entrance(req);
 			}
 			req.setAttribute("prev", req.getParameter("page"));
 		}

@@ -1,7 +1,5 @@
 package beans;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class AuthBean {
 	private String mId;
 	private String mPassword;

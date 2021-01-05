@@ -1,11 +1,6 @@
 package auth.services.mall.icia;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import beans.AuthBean;
@@ -21,58 +16,14 @@ import beans.AuthBean;
  * 5. Transcation
  * 6. Connection.close()
  * */
-public class DataAccessObject {
-	private Connection connection;
-	private Statement statement;
-	private PreparedStatement pstatement;
-	private int updRecords;
-	private ResultSet rs;
+public class DataAccessObject extends beans.DataAccessObject {
 	
-	public DataAccessObject() {
+	DataAccessObject() {
 
 	}
-
-	// 오라클 연결  :: Connection 개체 생성
-	public void getConnection() {
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			connection = DriverManager.getConnection("jdbc:oracle:thin:@106.243.194.230:7005:xe", "HONG", "1234");
-		}catch(Exception e) {
-
-		}
-	}
-	
-	public void setAutoCommit(boolean isAuto) {
-		try {
-			this.connection.setAutoCommit(isAuto);
-		} catch (SQLException e) {e.printStackTrace();}
-	}
-
-	// Transaction 처리 :: COMMIT  || ROLLBACK
-	public void setTransaction(boolean isCommit) {
-		try {
-			if(isCommit) {
-				this.connection.commit();
-			} else {
-				this.connection.rollback();
-			}
-		}catch(Exception e) {}
-	}
-
-	// 오라클 연결 해제 :: Connection.close()
-	public void closeConnection() {
-		try {
-			if(!this.connection.isClosed()) {
-				this.connection.close();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 
 	// 아이디 유무 확인 + 아이디 중복 체크
-	public int isMember(AuthBean auth) {
+	int isMember(AuthBean auth) {
 		this.pstatement = null;
 		this.rs = null;
 		int count = 0;
@@ -93,7 +44,7 @@ public class DataAccessObject {
 	}
 
 	// 현재 id 활성화 여부 확인
-	public int isActive(AuthBean auth) {
+	int isActive(AuthBean auth) {
 		this.pstatement = null;
 		this.rs = null;
 		int count = 0;
@@ -113,7 +64,7 @@ public class DataAccessObject {
 		return count;
 	}
 	// userId + userPassword 일치여부
-	public int isAccess(AuthBean auth) {
+	int isAccess(AuthBean auth) {
 		this.pstatement = null;
 		this.rs = null;
 		int count = 0;
@@ -134,7 +85,7 @@ public class DataAccessObject {
 	}
 
 	// ACCESSLOG INS 
-	public int insAccessLog(AuthBean auth) {
+	int insAccessLog(AuthBean auth) {
 		this.pstatement = null;
 		int count = 0;
 		
@@ -153,7 +104,7 @@ public class DataAccessObject {
 	}
 
 	// 회원정보 추출 :: 회원아이디, 회원이름, 로그인시간
-	public ArrayList<AuthBean> searchMemberInfo(AuthBean auth) {
+	ArrayList<AuthBean> searchMemberInfo(AuthBean auth) {
 		ArrayList<AuthBean> memberList = new ArrayList<AuthBean>();
 		
 		this.pstatement = null;
@@ -180,7 +131,7 @@ public class DataAccessObject {
 		return memberList;
 	} 
 	
-	public int joinMember(AuthBean auth) {
+	int joinMember(AuthBean auth) {
 		this.pstatement = null;
 		int count = 0;
 		
@@ -202,7 +153,7 @@ public class DataAccessObject {
 	}
 	
 	// 로그인 여부 확인
-	public int isLogout(AuthBean auth) {
+	int isLogout(AuthBean auth) {
 		this.pstatement = null;
 		this.rs = null;
 		int count = 0;

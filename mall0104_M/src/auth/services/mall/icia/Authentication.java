@@ -101,7 +101,7 @@ public class Authentication {
 					if (this.insAccessLog(auth)) {
 						list = this.searchMemberInfo(auth);
 						tran = true;
-						page = "index.jsp";
+						page = "goods.jsp";
 						msg = "";
 						mInfo = list.get(0).getmId() + "(" + list.get(0).getmName() + ")님은 "
 								+ list.get(0).getAccessTime() + "에 로그인하셨습니다.";
