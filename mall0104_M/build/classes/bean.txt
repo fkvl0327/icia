@@ -1,8 +1,0 @@
-JAVA BEANS :: JAVA CLASS
- - Constructor 없음
- - 저장변수는 field화 한다.  ==> instance화 한다.
- - 저장변수를 활용하기 위한 setter, getter method를 사용
- - 저장변수는 외부에서 직접 접근이 불가능 하도록 private선언
- - 변수나 배열이 단점이 하나의 데이터 타입사용이 아니라 여러개의 데이터 타입을 동시 저장 가능
- - MVC패턴에서 자바빈은 backend영역에서 데이터의 전달 목적으로 사용
- - 동적인 데이터를 저장하기 위해서 list함께 사용
