@@ -1,0 +1,31 @@
+package search.services.mall.icia;
+
+import javax.servlet.http.HttpServletRequest;
+
+import beans.Action;
+
+public class Orders {
+	private DataAccessObject dao;
+	
+	public Orders() {
+		
+	}
+	
+	public Action entrance(HttpServletRequest req) {
+		Action action = null;
+		
+		return action;
+	}
+	
+	private Action basketCtl(HttpServletRequest req) {
+		Action action = null;
+		
+		return action;
+	}
+	
+	private Action orderCtl(HttpServletRequest req) {
+		Action action = null;
+		
+		return action;
+	}
+}

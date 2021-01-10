@@ -1,0 +1,7 @@
+package beans.shopping.icia;
+
+public class Action {
+	boolean action;
+	String page;
+	String msg;
+}

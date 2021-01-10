@@ -1,0 +1,5 @@
+package auth.services.shopping.icia;
+
+public class Authentication extends Service {
+
+}

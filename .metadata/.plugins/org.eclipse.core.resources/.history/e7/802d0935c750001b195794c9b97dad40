@@ -1,0 +1,10 @@
+package services.shopping.icia;
+
+public abstract class Service {
+	
+	public abstract Action entrance(HttpServletRequest req);
+	
+	protected final boolean convertToBoolean(int value) {
+		return (value==1)? true : false;
+	}
+}

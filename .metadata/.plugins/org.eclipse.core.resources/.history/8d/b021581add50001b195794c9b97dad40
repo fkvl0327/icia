@@ -1,0 +1,32 @@
+package goods.services.shopping.icia;
+
+import javax.servlet.http.HttpServletRequest;
+
+import beans.shopping.icia.Action;
+import services.shopping.icia.Service;
+
+public class GoodsManagement extends Service {
+	Action action;
+	
+	public GoodsManagement(HttpServletRequest req) {
+		super(req);
+	}
+
+	@Override
+	public Action entrance(HttpServletRequest req) {
+		Action action = null;
+		switch(this.reqValue) {
+			case "Search":
+				this.searchCtl();
+				break;
+			case "GoodsDetail":
+				this.goodsDetailCtl();
+				break;
+			case "LogOut":
+				this.logOutCtl();
+				break;
+		}
+		return action;
+	}
+
+}

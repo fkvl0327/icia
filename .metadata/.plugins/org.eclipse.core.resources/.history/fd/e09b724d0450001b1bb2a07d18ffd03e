@@ -1,0 +1,5 @@
+package beans.shopping.icia;
+
+public class Action {
+
+}

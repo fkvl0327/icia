@@ -1,0 +1,14 @@
+package services.shopping.icia;
+
+import javax.servlet.http.HttpServletRequest;
+
+import beans.shopping.icia.Action;
+
+public abstract class Service {
+	
+	public abstract Action entrance(HttpServletRequest req);
+	
+	protected final boolean convertToBoolean(int value) {
+		return (value==1)? true : false;
+	}
+}

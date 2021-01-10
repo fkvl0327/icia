@@ -1,0 +1,15 @@
+package search.services.mall.icia;
+
+public class Orders {
+	private DataAccessObject dao;
+	
+	public Orders() {
+		
+	}
+	
+	public Action entrance(HttpServletRequest req) {
+		Action action = null;
+		
+		return action;
+	}
+}

@@ -1,0 +1,5 @@
+package module.shopping.icia;
+
+public class DataAccessObject {
+
+}

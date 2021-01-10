@@ -1,0 +1,16 @@
+package goods.services.shopping.icia;
+
+import javax.servlet.http.HttpServletRequest;
+
+import beans.shopping.icia.Action;
+import services.shopping.icia.Service;
+
+public class GoodsManagement extends Service {
+
+	@Override
+	public Action entrance(HttpServletRequest req) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

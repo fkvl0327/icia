@@ -1,0 +1,39 @@
+package search.services.mall.icia;
+
+import javax.servlet.http.HttpServletRequest;
+
+import beans.Action;
+
+public class Orders {
+	private DataAccessObject dao;
+	
+	public Orders() {
+		
+	}
+	
+	public Action entrance(HttpServletRequest req) {
+		Action action = null;
+		
+		return action;
+	}
+	
+	private Action basketCtl(HttpServletRequest req) {
+		Action action = null;
+		boolean isCommit = false;
+		
+		dao = new DataAccessObject();
+		dao.getConnection();
+		dao.setAutoCommit(false);
+		
+		dao.setTransaction(isCommit);
+		dao.setAutoCommit(true);
+		dao.closeConnection();
+		return action;
+	}
+	
+	private Action orderCtl(HttpServletRequest req) {
+		Action action = null;
+		
+		return action;
+	}
+}

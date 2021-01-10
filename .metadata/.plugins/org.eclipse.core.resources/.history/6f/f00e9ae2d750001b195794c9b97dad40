@@ -1,0 +1,30 @@
+package auth.services.shopping.icia;
+
+import javax.servlet.http.HttpServletRequest;
+
+import beans.shopping.icia.Action;
+import services.shopping.icia.Service;
+
+public class Authentication extends Service {
+	
+	public Authentication(HttpServletRequest request) {
+		super(request);
+	}
+	
+	@Override
+	public Action entrance(HttpServletRequest req) {
+		Action action = null;
+		switch(this.reqValue) {
+			case "LogIn":
+				break;
+			case "Join":
+				break;
+			case "LogOut":
+				break;
+		}
+		
+		
+		return action;
+	}
+
+}

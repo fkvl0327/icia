@@ -1,0 +1,5 @@
+package services.shopping.icia;
+
+public abstract class Service {
+
+}

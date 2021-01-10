@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="auth.services.mall.jade.Authentication"/>
+<fullyQualifiedTypeName name="java.sql.DriverManager"/>
+<fullyQualifiedTypeName name="java.sql.Connection"/>
+<fullyQualifiedTypeName name="beans.AuthBean"/>
+<fullyQualifiedTypeName name="auth.services.mall.icia.Authentication"/>
+<fullyQualifiedTypeName name="search.services.mall.icia.GoodsSearch"/>
+<fullyQualifiedTypeName name="beans.DataAccessObject"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="beans.GoodsBean"/>
+<fullyQualifiedTypeName name="java.sql.Statement"/>
+<fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
+<fullyQualifiedTypeName name="beans.shopping.icia.Action"/>
+<fullyQualifiedTypeName name="services.shopping.icia.Service"/>
+<fullyQualifiedTypeName name="auth.services.shopping.icia.Authentication"/>
+<fullyQualifiedTypeName name="goods.services.shopping.icia.GoodsManagement"/>
+<fullyQualifiedTypeName name="javax.servlet.http.HttpServletRequest"/>
+<fullyQualifiedTypeName name="search.services.mall.icia.Orders"/>
+<fullyQualifiedTypeName name="beans.Action"/>
+<fullyQualifiedTypeName name="javax.servlet.RequestDispatcher"/>
+<fullyQualifiedTypeName name="java.net.URLEncoder"/>
+</qualifiedTypeNameHistroy>

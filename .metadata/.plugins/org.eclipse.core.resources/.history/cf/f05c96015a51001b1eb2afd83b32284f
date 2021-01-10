@@ -1,0 +1,54 @@
+package controller.mall.icia;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import beans.Action;
+import search.services.mall.icia.Orders;
+
+@WebServlet({"/Basket", "/Order"})
+public class OrderController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	public OrderController() {
+		super();
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+	}
+
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		Action action = null;
+
+		// http://192.168.0.252/mall/Baket?gInfo=''&gInfo=''&gInfo=''
+
+		String reqValue = req.getRequestURI().substring(req.getContextPath().length() + 1);
+
+		if (reqValue.equals("Basket") || reqValue.equals("Order")) {
+			Orders orders = new Orders();
+			action = orders.entrance(req);
+			System.out.println("오더컨트롤러 정상작동");
+		}
+
+		// Client 응답
+		if (action.isActionType()) {
+			res.sendRedirect(action.getPage());
+		} else {
+			RequestDispatcher dispatcher = req.getRequestDispatcher(action.getPage());
+			dispatcher.forward(req, res);
+		}
+
+	}
+	prviate String setParam(HttpServletRequest req) {
+		
+	}
+}
